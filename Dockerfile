@@ -3,8 +3,9 @@ FROM ich777/novnc-baseimage
 LABEL maintainer="admin@minenet.at"
 
 RUN apt-get update && \
+	apt-get -y install libgtk-3-0 libicu67 && \
 	rm -rf /var/lib/apt/lists/* && \
-	sed -i '/    document.title =/c\    document.title = "uNmINeD - noVNC";' /usr/share/novnc/app/ui.js && \
+	sed -i '/    document.title =/c\    document.title = "uNmINeD-GUI - noVNC";' /usr/share/novnc/app/ui.js && \
 	rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR=/unmined
