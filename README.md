@@ -25,7 +25,7 @@ docker run --name uNmINeD-GUI -d \
 	--env 'UMASK=000' \
 	--env 'DATA_PERM=770' \
 	--volume /path/to/unmined:/unmined \
-	--volume /path/to/minecraft/worlds:/unmined/worlds \
+	--volume /path/to/minecraft/worlds:/unmined/worlds:ro \
 	ich777/unmined
 ```
 ### Webgui address: http://[SERVERIP]:[PORT]/vnc.html?autoconnect=true
