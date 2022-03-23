@@ -18,6 +18,7 @@ fi
 echo "---Starting...---"
 chown -R root:${GID} /opt/scripts
 chmod -R 750 /opt/scripts
+cd ${DATA_DIR}
 chown -R ${UID}:${GID} $(ls -I worlds ${DATA_DIR}/) 2>/dev/null
 
 term_handler() {
