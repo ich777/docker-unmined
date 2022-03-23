@@ -3,11 +3,49 @@ export DISPLAY=:99
 export XDG_RUNTIME_DIR=/tmp/xdg
 export XAUTHORITY=${DATA_DIR}/.Xauthority
 
+CUR_V="$(ls ${DATA_DIR}/uNmINeD-* 2>/dev/null | cut -d '-' -f2 | sed 's/\.tar\.gz//g')"
+LAT_V="$(wget -qO- https://unmined.net/downloads/ | grep "Download" | grep "zip" | awk '{print $2}' | sort -V | tail -1)"
+
+if [ -z "$LAT_V" ]; then
+  if [ ! -z "$CUR_V" ]; then
+    echo "---Can't get latest version of uNmINeD-GUI falling back to v$CUR_V---"
+    LAT_V="$CUR_V"
+  else
+    echo "---Something went wrong, can't get latest version of uNmINeD-GUI, putting container into sleep mode---"
+    sleep infinity
+  fi
+fi
+
+echo "---Version Check---"
+if [ -z "$CUR_V" ]; then
+	echo "---uNmINeD-GUI not installed, installing---"
+	cd ${DATA_DIR}
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-sc/" ; then
+		echo "---Sucessfully downloaded uNmINeD-GUI---"
+	else
+		echo "---Something went wrong, can't download uNmINeD-GUI, putting container in sleep mode---"
+		sleep infinity
+	fi
+	tar -C ${DATA_DIR} --overwrite --strip-components=1 -xf ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz
+elif [ "$CUR_V" != "$LAT_V" ]; then
+	echo "---Version missmatch, installed v$CUR_V, downloading and installing latest v$LAT_V...---"
+	cd ${DATA_DIR}
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-sc/" ; then
+		echo "---Sucessfully downloaded uNmINeD-GUI---"
+	else
+		echo "---Something went wrong, can't download uNmINeD-GUI, putting container in sleep mode---"
+		sleep infinity
+	fi
+	tar -C ${DATA_DIR} --overwrite --strip-components=1 -xf ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz
+elif [ "$CUR_V" == "$LAT_V" ]; then
+	echo "---uNmINeD-GUI v$CUR_V up-to-date---"
+fi
+
 echo "---Checking for old display lock files---"
 rm -rf /tmp/.X99*
 rm -rf /tmp/.X11*
 rm -rf ${DATA_DIR}/.vnc/*.log ${DATA_DIR}/.vnc/*.pid
-chmod -R ${DATA_PERM} ${DATA_DIR}
+chmod -R ${DATA_PERM} ${DATA_DIR} 2>/dev/null
 if [ -f ${DATA_DIR}/.vnc/passwd ]; then
 	if [ "${RUNASROOT}" == "true" ]; then
 		chmod 600 /root/.vnc/passwd
@@ -44,6 +82,6 @@ echo "---Starting noVNC server---"
 websockify -D --web=/usr/share/novnc/ --cert=/etc/ssl/novnc.pem ${NOVNC_PORT} localhost:${RFB_PORT}
 sleep 2
 
-echo "---Starting uNmINeD---"
-echo "---Container under construction---"
-sleep infinity
+echo "---Starting uNmINeD-GUI---"
+cd ${DATA_DIR}
+${DATA_DIR}/unmined 2>/dev/null
