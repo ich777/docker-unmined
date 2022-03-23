@@ -4,7 +4,7 @@ LABEL maintainer="admin@minenet.at"
 
 RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* && \
-	sed -i '/    document.title =/c\    document.title = "Thunderbird - noVNC";' /usr/share/novnc/app/ui.js && \
+	sed -i '/    document.title =/c\    document.title = "uNmINeD - noVNC";' /usr/share/novnc/app/ui.js && \
 	rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR=/unmined
