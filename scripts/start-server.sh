@@ -45,4 +45,5 @@ websockify -D --web=/usr/share/novnc/ --cert=/etc/ssl/novnc.pem ${NOVNC_PORT} lo
 sleep 2
 
 echo "---Starting uNmINeD---"
+echo "---Container under construction---"
 sleep infinity
