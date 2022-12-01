@@ -24,17 +24,20 @@ if [ -z "$CUR_V" ]; then
 		echo "---Sucessfully downloaded uNmINeD-GUI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-GUI, putting container in sleep mode---"
+		rm -rf ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz
 		sleep infinity
 	fi
 	tar -C ${DATA_DIR} --overwrite --strip-components=1 -xf ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz
 elif [ "$CUR_V" != "$LAT_V" ]; then
 	UPDATED_UNMINED_CLI="true"
 	echo "---Version missmatch, installed v$CUR_V, downloading and installing latest v$LAT_V...---"
+	rm -rf ${DATA_DIR}/uNmINeD-${CUR_V}.tar.gz
 	cd ${DATA_DIR}
 	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-sc/" ; then
 		echo "---Sucessfully downloaded uNmINeD-GUI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-GUI, putting container in sleep mode---"
+		rm -rf ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz
 		sleep infinity
 	fi
 	tar -C ${DATA_DIR} --overwrite --strip-components=1 -xf ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz
@@ -49,6 +52,7 @@ if [ ! -f ${DATA_DIR}/unmined-cli ]; then
 		echo "---Sucessfully downloaded uNmINeD-CLI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-CLI, continuing---"
+		rm -rf ${DATA_DIR}/uNmINeD-CLI.tar.gz
 	fi
 	tar -C ${DATA_DIR} --overwrite --strip-components=1 -xf ${DATA_DIR}/uNmINeD-CLI.tar.gz --wildcards unmined-cli*/unmined-cli unmined-cli*/README.md
 	rm -f ${DATA_DIR}/uNmINeD-CLI.tar.gz
