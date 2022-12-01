@@ -3,7 +3,7 @@ export DISPLAY=:99
 export XDG_RUNTIME_DIR=/tmp/xdg
 export XAUTHORITY=${DATA_DIR}/.Xauthority
 
-CUR_V="$(ls ${DATA_DIR}/uNmINeD-* 2>/dev/null | cut -d '-' -f2 | sed 's/\.tar\.gz//g')"
+CUR_V="$(ls ${DATA_DIR}/uNmINeD-* 2>/dev/null | cut -d '-' -f2 | sed 's/\.tar\.gz//g' | sort -V | tail -1)"
 LAT_V="$(wget -qO- https://unmined.net/downloads/ | grep "Download" | grep "zip" | awk '{print $2}' | sort -V | tail -1)"
 
 if [ -z "$LAT_V" ]; then
