@@ -4,7 +4,7 @@ export XDG_RUNTIME_DIR=/tmp/xdg
 export XAUTHORITY=${DATA_DIR}/.Xauthority
 
 CUR_V="$(ls ${DATA_DIR}/uNmINeD-* 2>/dev/null | cut -d '-' -f2 | sed 's/\.tar\.gz//g' | sort -V | tail -1)"
-LAT_V="$(wget -qO- https://unmined.net/downloads/ | grep "Download" | grep "zip" | awk '{print $2}' | sort -V | tail -1)"
+LAT_V="$(wget -qO- https://unmined.net/downloads/ | grep "zip" | sed '/^[^0-9]/d' | awk '{print $1}' | sort -V | tail -1)"
 
 if [ -z "$LAT_V" ]; then
   if [ ! -z "$CUR_V" ]; then
@@ -20,7 +20,7 @@ echo "---Version Check---"
 if [ -z "$CUR_V" ]; then
 	echo "---uNmINeD-GUI not found! Please wait, installing...---"
 	cd ${DATA_DIR}
-	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-sc/" ; then
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-dev/" ; then
 		echo "---Sucessfully downloaded uNmINeD-GUI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-GUI, putting container in sleep mode---"
@@ -33,7 +33,7 @@ elif [ "$CUR_V" != "$LAT_V" ]; then
 	echo "---Version missmatch, installed v$CUR_V, downloading and installing latest v$LAT_V...---"
 	rm -rf ${DATA_DIR}/uNmINeD-${CUR_V}.tar.gz
 	cd ${DATA_DIR}
-	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-sc/" ; then
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-${LAT_V}.tar.gz "https://unmined.net/download/unmined-gui-linux-x64-dev/" ; then
 		echo "---Sucessfully downloaded uNmINeD-GUI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-GUI, putting container in sleep mode---"
@@ -48,7 +48,7 @@ fi
 if [ ! -f ${DATA_DIR}/unmined-cli ]; then
 	echo "uNmINeD-CLI not found! Please wait, installing..."
 	cd ${DATA_DIR}
-	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-CLI.tar.gz "https://unmined.net/download/unmined-cli-linux-x64-sc/" ; then
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-CLI.tar.gz "https://unmined.net/download/unmined-cli-linux-x64-dev/" ; then
 		echo "---Sucessfully downloaded uNmINeD-CLI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-CLI, continuing---"
@@ -59,7 +59,7 @@ if [ ! -f ${DATA_DIR}/unmined-cli ]; then
 elif [ "$UPDATED_UNMINED_CLI" == "true" ]; then
 	echo "---Updating uNmINeD-CLI, please wait...---"
 	cd ${DATA_DIR}
-	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-CLI.tar.gz "https://unmined.net/download/unmined-cli-linux-x64-sc/" ; then
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/uNmINeD-CLI.tar.gz "https://unmined.net/download/unmined-cli-linux-x64-dev/" ; then
 		echo "---Sucessfully downloaded uNmINeD-CLI---"
 	else
 		echo "---Something went wrong, can't download uNmINeD-CLI, continuing---"
